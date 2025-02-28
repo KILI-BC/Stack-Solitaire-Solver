@@ -63,7 +63,7 @@ int issolvable(int *stack, int stackheights[]){
 		{
 			if(own_stackheights[j] == 0)
 				continue;
-			/*FALSCH! STACK FUNKTIONIERT SO NICHT*/
+			/*STACK DOESNT WORK LIKE THIS*/
 			if(stack[own_stackheights[i] - 1] == stack[own_stackheights[j] - 1]) {
 				own_stackheights[i]--;
 				own_stackheights[j]--;
@@ -111,8 +111,9 @@ void print_stack(int* stack)
 
 	for (i = 0; i < STACK_HEIGHT * STACK_COUNT; i++)
 	{
-		printf("%i, ", stack[i]);
 		if((i+1) % STACK_HEIGHT == 0)
-			printf("\n");
+			printf("%i\n", stack[i]);
+		else
+			printf("%i, ", stack[i]);
 	}
 }
