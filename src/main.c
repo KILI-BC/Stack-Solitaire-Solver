@@ -2,8 +2,12 @@
 #include <stdio.h>
 #include <time.h>
 
+/*The stack count also is the number of different face values*/
 #define STACK_COUNT 8
+/*The stack height also is the number of cards per face value;
+ it has to be even for the game to be potentially solvable*/
 #define STACK_HEIGHT 4
+
 #define TRUE 1
 #define FALSE 0
 #define ERROR -1
@@ -25,8 +29,7 @@ int main(){
 	print_stack(stack);
 
 	is_solvable = issolvable(stack, stackheights);
-	switch (is_solvable)
-	{
+	switch (is_solvable){
 	case TRUE:
 		printf("The problem is solvable");
 		break;
@@ -44,6 +47,7 @@ int main(){
 int issolvable(int *stack, int stackheights[]){
 	int i, j, ret_val, is_solved = TRUE;
 	int own_stackheights[STACK_COUNT];
+
 	if(stack == NULL)
 		return ERROR;
 
@@ -60,7 +64,7 @@ int issolvable(int *stack, int stackheights[]){
 	{
 		if(own_stackheights[i] == 0)
 			continue;
-		for (j = i+1; j < STACK_COUNT; j++)
+		for (j = (i + 1); j < STACK_COUNT; j++)
 		{
 			if(own_stackheights[j] == 0)
 				continue;
@@ -85,17 +89,19 @@ int issolvable(int *stack, int stackheights[]){
 int* generate_stack()
 {
 	int i, j, r;
+
 	int *ret = calloc(STACK_COUNT * STACK_HEIGHT, sizeof(int));
 	if(ret == NULL)
 		return NULL;
 
-	/*Zeroes are left empty*/
+	/*zeroes are left empty;
+	  the loop iterates over the face values*/
 	for (i = 1; i < STACK_COUNT; i++)
 	{
 		for (j = 0; j < STACK_HEIGHT; j++)
 		{
-			do
-			{
+			/*r is the random position where the face value is saved*/
+			do {
 				r = rand() % (STACK_COUNT * STACK_HEIGHT);
 
 			} while (ret[r] != 0);
@@ -114,7 +120,7 @@ void print_stack(int* stack)
 
 	for (i = 0; i < STACK_HEIGHT * STACK_COUNT; i++)
 	{
-		if((i+1) % STACK_HEIGHT == 0)
+		if((i + 1) % STACK_HEIGHT == 0)
 			printf("%i\n", stack[i]);
 		else
 			printf("%i, ", stack[i]);
