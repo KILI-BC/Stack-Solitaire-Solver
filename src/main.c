@@ -12,39 +12,56 @@
 #define FALSE 0
 #define ERROR -1
 
-int issolvable(int *stack, int stackheights[]);
+int run(int print);
+int issolvable(int *stack, int stackheights[], int print);
 int* generate_stack();
 void print_stack(int* stack);
 
 int main(){
+	srand(time(NULL));
+	run(TRUE);
+	return EXIT_SUCCESS;
+}
+
+int run(int print)
+{
 	int* stack;
 	int i;
 	int is_solvable;
 	int stackheights[STACK_COUNT];
+	/*initialize stackheights*/
 	for (i = 0; i < STACK_COUNT; i++)
 		stackheights[i] = STACK_HEIGHT;
 
-	srand(time(NULL));
-	stack = generate_stack();
-	print_stack(stack);
 
-	is_solvable = issolvable(stack, stackheights);
-	switch (is_solvable){
-	case TRUE:
-		printf("The problem is solvable");
-		break;
-	case FALSE:
-		printf("The problem is not solvable");
-		break;
-	default:
-		printf("An error has occurred");
-		break;
+	stack = generate_stack();
+	if(stack == NULL)
+		return ERROR;
+	if(print){
+		printf("Stack:\n");
+		print_stack(stack);
 	}
 
-	return EXIT_SUCCESS;
+	putchar('\n');
+	is_solvable = issolvable(stack, stackheights, print);
+
+	if(print == TRUE){
+		switch (is_solvable){
+		case TRUE:
+			printf("\nThe problem is solvable (one solution above)");
+			break;
+		case FALSE:
+			printf("The problem is not solvable");
+			break;
+		default:
+			break;
+		}
+	}
+	return is_solvable;
 }
 
-int issolvable(int *stack, int stackheights[]){
+
+int issolvable(int *stack, int stackheights[], int print){
 	int i, j, ret_val, is_solved = TRUE;
 	int own_stackheights[STACK_COUNT];
 
@@ -72,9 +89,10 @@ int issolvable(int *stack, int stackheights[]){
 			if(stack[(i * STACK_HEIGHT) + own_stackheights[i] - 1] == stack[ (j* STACK_HEIGHT) + own_stackheights[j] - 1]) {
 				own_stackheights[i]--;
 				own_stackheights[j]--;
-				ret_val = issolvable(stack, own_stackheights);
+				ret_val = issolvable(stack, own_stackheights, print);
 				if(ret_val != FALSE){
-					printf("(%i, %i)\n", i,j);
+					if(print == TRUE)
+						printf("(%i, %i)\n", i,j);
 					return ret_val;
 				}
 				own_stackheights[i]++;
