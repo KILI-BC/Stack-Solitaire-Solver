@@ -47,29 +47,32 @@ int issolvable(int *stack, int stackheights[]){
 	if(stack == NULL)
 		return ERROR;
 
-	for (i = 0; i < 8; i++)
+	for (i = 0; i < 8; i++){
 		if(is_solved == TRUE && stackheights[i] != 0)
 			is_solved = FALSE;
 		own_stackheights[i] = stackheights[i];
+	}
 
-	if(is_solved == TRUE);
+	if(is_solved == TRUE)
 		return TRUE;
 
 	for (i = 0; i < STACK_COUNT; i++)
 	{
 		if(own_stackheights[i] == 0)
 			continue;
-		for (j = i; j < STACK_COUNT; j++)
+		for (j = i+1; j < STACK_COUNT; j++)
 		{
 			if(own_stackheights[j] == 0)
 				continue;
-			/*STACK DOESNT WORK LIKE THIS*/
-			if(stack[own_stackheights[i] - 1] == stack[own_stackheights[j] - 1]) {
+
+			if(stack[(i * STACK_HEIGHT) + own_stackheights[i] - 1] == stack[ (j* STACK_HEIGHT) + own_stackheights[j] - 1]) {
 				own_stackheights[i]--;
 				own_stackheights[j]--;
 				ret_val = issolvable(stack, own_stackheights);
-				if(ret_val != FALSE)
+				if(ret_val != FALSE){
+					printf("(%i, %i)\n", i,j);
 					return ret_val;
+				}
 				own_stackheights[i]++;
 				own_stackheights[j]++;
 			}
