@@ -10,5 +10,5 @@
 6. turn over uncovered face-down cards
 7. if no more cards are left you won else jump to 4.
 
-## How the solution is found
-The implementation of the solution uses a recursive approach to determine whether or not a randomized game is solvable
+## How a possible solution is found
+The implementation uses a recursive approach to determine whether or not a randomized game is solvable
