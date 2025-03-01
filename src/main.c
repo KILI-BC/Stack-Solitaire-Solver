@@ -18,8 +18,22 @@ int* generate_stack();
 void print_stack(int* stack);
 
 int main(){
+	int i, res, success_cnt = 0;
 	srand(time(NULL));
-	run(TRUE);
+
+	for(i = 0; i < 100; i++){
+		res = run(FALSE);
+
+		if(res == ERROR){
+			printf("An error has occurred!");
+			return EXIT_FAILURE;
+		}
+
+		if(res == TRUE)
+			success_cnt++;
+	}
+
+	printf("Relative solvability frequency: %f", success_cnt / 100.0);
 	return EXIT_SUCCESS;
 }
 
@@ -40,9 +54,9 @@ int run(int print)
 	if(print){
 		printf("Stack:\n");
 		print_stack(stack);
+		putchar('\n');
 	}
 
-	putchar('\n');
 	is_solvable = issolvable(stack, stackheights, print);
 
 	if(print == TRUE){
